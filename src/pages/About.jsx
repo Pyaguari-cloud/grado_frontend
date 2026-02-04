@@ -43,10 +43,10 @@ const About = () => {
   ]
 
   const team = [
-    { name: 'Dr. Juan Pérez', role: 'Director General', image: 'https://randomuser.me/api/portraits/men/1.jpg' },
-    { name: 'Dra. María García', role: 'Directora Académica', image: 'https://randomuser.me/api/portraits/women/2.jpg' },
-    { name: 'Lic. Carlos López', role: 'Coordinador de Tecnología', image: 'https://randomuser.me/api/portraits/men/3.jpg' },
-    { name: 'Dra. Ana Martínez', role: 'Coordinadora de Bienestar', image: 'https://randomuser.me/api/portraits/women/4.jpg' }
+    { name: 'Lic. Gabriel Layana Indacochea', role: 'Rector', image: 'https://res.cloudinary.com/dq9swdjmv/image/upload/v1770249086/inspector_boed9y.jpg' },
+    { name: 'Msc. Miguel Mateo Menendez', role: 'Inspector General', image: 'https://res.cloudinary.com/dq9swdjmv/image/upload/v1770249086/inspector_boed9y.jpg' },
+    { name: 'Lic. Maria Belén Pineda', role: 'DECE', image: 'https://randomuser.me/api/portraits/men/3.jpg' },
+    { name: 'Msc. Pamela Contreras Baque', role: 'Coordinadora Acádemica', image: 'https://randomuser.me/api/portraits/women/4.jpg' }
   ]
 
   return (
