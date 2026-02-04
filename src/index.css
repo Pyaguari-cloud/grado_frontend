@@ -1,0 +1,8 @@
+@import "tailwindcss";
+
+/* Paleta institucional */
+:root {
+  --color-primary: #0b2545;   /* azul institucional */
+  --color-accent: #f9c80e;    /* amarillo institucional */
+  --color-background: #ffffff;
+}
