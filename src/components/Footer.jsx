@@ -31,11 +31,11 @@ const Footer = () => {
             transition={{ delay: 0.1 }}
           >
             <div className="flex items-center space-x-2 mb-4">
-              <GraduationCap className="w-8 h-8 text-yellow-400" />
-              <span className="text-2xl font-bold">Colegio Premium</span>
+              
+              <span className="text-2xl font-bold">UEPMRMP</span>
             </div>
             <p className="text-gray-400 leading-relaxed mb-6">
-              Transformando vidas a través de la educación de excelencia desde 1990.
+              Transformando vidas a través de la educación de excelencia.
             </p>
             <div className="flex space-x-4">
               {socialLinks.map((social, index) => (
@@ -84,15 +84,15 @@ const Footer = () => {
             <ul className="space-y-4">
               <li className="flex items-start space-x-3 text-gray-400">
                 <MapPin className="w-5 h-5 text-yellow-400 mt-1" />
-                <span>Av. Principal #123, Ciudad, País</span>
+                <span>Av. Raúl Clemente Huerta</span>
               </li>
               <li className="flex items-center space-x-3 text-gray-400">
                 <Phone className="w-5 h-5 text-yellow-400" />
-                <span>+1 (234) 567-8900</span>
+                <span>099 443 0011</span>
               </li>
               <li className="flex items-center space-x-3 text-gray-400">
                 <Mail className="w-5 h-5 text-yellow-400" />
-                <span>info@colegiopremium.edu</span>
+                <span>secretaria@uepmrmp.edu.ec</span>
               </li>
             </ul>
           </motion.div>
@@ -127,7 +127,7 @@ const Footer = () => {
       <div className="border-t border-gray-700">
         <div className="container mx-auto px-4 py-6">
           <div className="flex flex-col md:flex-row justify-between items-center text-gray-400 text-sm">
-            <p>© {currentYear} Colegio Premium. Todos los derechos reservados.</p>
+            <p>© {currentYear} UEPMRMP. Todos los derechos reservados.</p>
             <div className="flex space-x-6 mt-4 md:mt-0">
               <a href="#" className="hover:text-yellow-400 transition">Política de Privacidad</a>
               <a href="#" className="hover:text-yellow-400 transition">Términos de Uso</a>
