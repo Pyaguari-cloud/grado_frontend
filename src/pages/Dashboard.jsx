@@ -118,6 +118,26 @@ const Dashboard = () => {
           </motion.div>
         )}
 
+        {isAdmin && (
+          <Link
+            to="/admin/users"
+            className="group relative overflow-hidden rounded-2xl bg-slate-900 text-white p-6 sm:p-7 shadow-md hover:shadow-lg transition-shadow"
+          >
+            <div className="absolute inset-0 bg-gradient-to-r from-slate-900 to-slate-700 opacity-90" />
+            <div className="relative z-10">
+              <div className="text-3xl mb-3">👥</div>
+              <h3 className="text-xl font-bold mb-1">Gestionar usuarios</h3>
+              <p className="text-sm text-slate-100/90 mb-4">
+                Visualiza y administra cuentas de estudiantes, docentes y administradores.
+              </p>
+              <span className="inline-flex items-center gap-1 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold">
+                Ir al módulo
+                <span className="group-hover:translate-x-0.5 transition-transform">→</span>
+              </span>
+            </div>
+          </Link>
+        )}
+
         {/* SECCIÓN MIS CURSOS */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
@@ -175,13 +195,12 @@ const Dashboard = () => {
 
                   <div className="flex items-center justify-between mb-2">
                     <span
-                      className={`px-2.5 py-1 rounded-full text-[10px] font-semibold capitalize ${
-                        enrollment.status === 'active'
+                      className={`px-2.5 py-1 rounded-full text-[10px] font-semibold capitalize ${enrollment.status === 'active'
                           ? 'bg-emerald-50 text-emerald-700 border border-emerald-100'
                           : enrollment.status === 'completed'
-                          ? 'bg-sky-50 text-sky-700 border border-sky-100'
-                          : 'bg-amber-50 text-amber-700 border border-amber-100'
-                      }`}
+                            ? 'bg-sky-50 text-sky-700 border border-sky-100'
+                            : 'bg-amber-50 text-amber-700 border border-amber-100'
+                        }`}
                     >
                       {enrollment.status}
                     </span>

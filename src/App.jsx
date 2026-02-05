@@ -40,29 +40,37 @@ function App() {
               <Route path="/forgot-password" element={<ForgotPassword />} />
               <Route path="/reset-password" element={<ResetPassword />} />
               {/* PRIVADAS */}
-              <Route 
-                path="/dashboard" 
+              <Route
+                path="/dashboard"
                 element={
                   <PrivateRoute>
                     <Dashboard />
                   </PrivateRoute>
-                } 
+                }
               />
-              <Route 
-                path="/manage-courses" 
+              <Route
+                path="/manage-courses"
                 element={
                   <PrivateRoute>
                     <ManageCourses />
                   </PrivateRoute>
-                } 
+                }
               />
-              <Route 
-                path="/manage-contacts" 
+              <Route
+                path="/manage-contacts"
                 element={
                   <PrivateRoute>
                     <ManageContacts />
                   </PrivateRoute>
-                } 
+                }
+              />
+              <Route
+                path="/admin/users"
+                element={
+                  <AdminRoute>
+                    <ManageUsers />
+                  </AdminRoute>
+                }
               />
             </Routes>
           </main>
