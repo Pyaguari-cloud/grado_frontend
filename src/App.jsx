@@ -18,6 +18,7 @@ import VerifyEmail from './pages/VerifyEmail'
 import ForgotPassword from './pages/ForgotPassword'
 import ResetPassword from './pages/ResetPassword'
 import AcademicOfferings from './pages/AcademicOfferings'
+import ManageUsers from './pages/ManageUsers'
 
 function App() {
   return (
@@ -67,9 +68,9 @@ function App() {
               <Route
                 path="/admin/users"
                 element={
-                  <AdminRoute>
+                  <PrivateRoute>
                     <ManageUsers />
-                  </AdminRoute>
+                  </PrivateRoute>
                 }
               />
             </Routes>
