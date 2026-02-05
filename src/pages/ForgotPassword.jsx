@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
+import { useNavigate } from 'react-router-dom'
 import authService from '../services/authService'
 
 const ForgotPassword = () => {
@@ -7,6 +8,7 @@ const ForgotPassword = () => {
   const [message, setMessage] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+  const navigate = useNavigate()
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -15,7 +17,15 @@ const ForgotPassword = () => {
     setLoading(true)
     try {
       const res = await authService.forgotPassword(email)
+
       setMessage(res.message || 'Si el correo existe, se ha enviado un código.')
+
+      // Si la petición fue exitosa, redirigimos a /reset-password con el email
+      if (res.success !== false) {
+        setTimeout(() => {
+          navigate(`/reset-password?email=${encodeURIComponent(email)}`)
+        }, 800) // pequeño delay para que el usuario vea el mensaje
+      }
     } catch (err) {
       setError(err.response?.data?.message || 'Error al enviar el correo')
     } finally {
