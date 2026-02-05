@@ -113,7 +113,7 @@ const AcademicOfferings = () => {
               Oferta académica
             </p>
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-4">
-              Unidad Educativa Premium School
+              Unidad Educativa Monseñor Roberto Maria del Pozo
             </h1>
             <p className="text-sm sm:text-base md:text-lg text-slate-100 max-w-3xl mx-auto">
               Acompañamos a nuestros estudiantes desde Educación Inicial hasta Tercero de Bachillerato,

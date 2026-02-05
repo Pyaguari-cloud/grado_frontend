@@ -46,7 +46,7 @@ const About = () => {
     { name: 'Lic. Gabriel Layana Indacochea', role: 'Rector', image: 'https://res.cloudinary.com/dq9swdjmv/image/upload/v1770249086/rector_uqkc3a.jpg' },
     { name: 'Msc. Miguel Mateo Menendez', role: 'Inspector General', image: 'https://res.cloudinary.com/dq9swdjmv/image/upload/v1770249086/inspector_boed9y.jpg' },
     { name: 'Msc. Clara Soriano Ramirez', role: 'Sub Inspectora', image: 'https://res.cloudinary.com/dq9swdjmv/image/upload/v1770249703/sub_inspectora_htovof.jpg' },
-    { name: 'Msc. Pamela Contreras Baque', role: 'Coordinadora Acádemica', image: 'https://res.cloudinary.com/dq9swdjmv/image/upload/v1770250103/c._academica_juhgrn.jpg' }
+    { name: 'Msc. Pamela Contreras Baque', role: 'Coordinadora Acádemica', image: 'https://res.cloudinary.com/dq9swdjmv/image/upload/v1770251239/gia_chex99.jpg' }
   ]
 
   return (
