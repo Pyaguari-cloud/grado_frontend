@@ -26,6 +26,16 @@ const Dashboard = () => {
     }
   }, [user])
 
+  // Determinar cuántas columnas para el grid de acciones
+  // - Admin: 3 columnas (cursos, mensajes, usuarios)
+  // - Docente: 1 columna (cursos)
+  const actionsGridClass =
+    isAdmin && isTeacher
+      ? 'grid md:grid-cols-3 gap-6'
+      : isAdmin
+      ? 'grid md:grid-cols-3 gap-6'
+      : 'grid md:grid-cols-1 gap-6'
+
   return (
     <div className="min-h-[calc(100vh-4rem)] bg-slate-50 py-10 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto space-y-8">
@@ -40,9 +50,14 @@ const Dashboard = () => {
               Panel principal
             </p>
             <h1 className="text-2xl sm:text-3xl font-bold text-slate-900">
-              Bienvenido, <span className="text-[var(--color-primary)]">{user?.name}</span>
+              Bienvenido,{' '}
+              <span className="text-[var(--color-primary)]">
+                {user?.name}
+              </span>
             </h1>
-            <p className="mt-2 text-sm text-slate-600">Email: {user?.email}</p>
+            <p className="mt-2 text-sm text-slate-600">
+              Email: {user?.email}
+            </p>
             <p className="text-sm text-slate-600">
               Rol:{' '}
               <span className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-semibold capitalize text-[var(--color-primary)]">
@@ -76,8 +91,9 @@ const Dashboard = () => {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.05 }}
-            className="grid md:grid-cols-2 gap-6"
+            className={actionsGridClass}
           >
+            {/* Gestionar cursos (admin + docente) */}
             <Link
               to="/manage-courses"
               className="group relative overflow-hidden rounded-2xl bg-[var(--color-primary)] text-white p-6 sm:p-7 shadow-md hover:shadow-lg transition-shadow"
@@ -91,11 +107,14 @@ const Dashboard = () => {
                 </p>
                 <span className="inline-flex items-center gap-1 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold">
                   Ir al módulo
-                  <span className="group-hover:translate-x-0.5 transition-transform">→</span>
+                  <span className="group-hover:translate-x-0.5 transition-transform">
+                    →
+                  </span>
                 </span>
               </div>
             </Link>
 
+            {/* Mensajes de contacto (solo admin) */}
             {isAdmin && (
               <Link
                 to="/manage-contacts"
@@ -104,38 +123,48 @@ const Dashboard = () => {
                 <div className="absolute inset-0 bg-gradient-to-r from-[var(--color-accent)] to-amber-300 opacity-90" />
                 <div className="relative z-10">
                   <div className="text-3xl mb-3">✉️</div>
-                  <h3 className="text-xl font-bold mb-1">Mensajes de contacto</h3>
+                  <h3 className="text-xl font-bold mb-1">
+                    Mensajes de contacto
+                  </h3>
                   <p className="text-sm text-slate-800 mb-4">
                     Revisa y responde solicitudes de familias y estudiantes.
                   </p>
                   <span className="inline-flex items-center gap-1 rounded-full bg-black/5 px-3 py-1 text-xs font-semibold">
                     Ver mensajes
-                    <span className="group-hover:translate-x-0.5 transition-transform">→</span>
+                    <span className="group-hover:translate-x-0.5 transition-transform">
+                      →
+                    </span>
+                  </span>
+                </div>
+              </Link>
+            )}
+
+            {/* Gestionar usuarios (solo admin) */}
+            {isAdmin && (
+              <Link
+                to="/admin/users"
+                className="group relative overflow-hidden rounded-2xl bg-slate-900 text-white p-6 sm:p-7 shadow-md hover:shadow-lg transition-shadow"
+              >
+                <div className="absolute inset-0 bg-gradient-to-r from-slate-900 to-slate-700 opacity-90" />
+                <div className="relative z-10">
+                  <div className="text-3xl mb-3">👥</div>
+                  <h3 className="text-xl font-bold mb-1">
+                    Gestionar usuarios
+                  </h3>
+                  <p className="text-sm text-slate-100/90 mb-4">
+                    Visualiza y administra cuentas de estudiantes, docentes y
+                    administradores.
+                  </p>
+                  <span className="inline-flex items-center gap-1 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold">
+                    Ir al módulo
+                    <span className="group-hover:translate-x-0.5 transition-transform">
+                      →
+                    </span>
                   </span>
                 </div>
               </Link>
             )}
           </motion.div>
-        )}
-
-        {isAdmin && (
-          <Link
-            to="/admin/users"
-            className="group relative overflow-hidden rounded-2xl bg-slate-900 text-white p-6 sm:p-7 shadow-md hover:shadow-lg transition-shadow"
-          >
-            <div className="absolute inset-0 bg-gradient-to-r from-slate-900 to-slate-700 opacity-90" />
-            <div className="relative z-10">
-              <div className="text-3xl mb-3">👥</div>
-              <h3 className="text-xl font-bold mb-1">Gestionar usuarios</h3>
-              <p className="text-sm text-slate-100/90 mb-4">
-                Visualiza y administra cuentas de estudiantes, docentes y administradores.
-              </p>
-              <span className="inline-flex items-center gap-1 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold">
-                Ir al módulo
-                <span className="group-hover:translate-x-0.5 transition-transform">→</span>
-              </span>
-            </div>
-          </Link>
         )}
 
         {/* SECCIÓN MIS CURSOS */}
@@ -195,12 +224,13 @@ const Dashboard = () => {
 
                   <div className="flex items-center justify-between mb-2">
                     <span
-                      className={`px-2.5 py-1 rounded-full text-[10px] font-semibold capitalize ${enrollment.status === 'active'
+                      className={`px-2.5 py-1 rounded-full text-[10px] font-semibold capitalize ${
+                        enrollment.status === 'active'
                           ? 'bg-emerald-50 text-emerald-700 border border-emerald-100'
                           : enrollment.status === 'completed'
-                            ? 'bg-sky-50 text-sky-700 border border-sky-100'
-                            : 'bg-amber-50 text-amber-700 border border-amber-100'
-                        }`}
+                          ? 'bg-sky-50 text-sky-700 border border-sky-100'
+                          : 'bg-amber-50 text-amber-700 border border-amber-100'
+                      }`}
                     >
                       {enrollment.status}
                     </span>
