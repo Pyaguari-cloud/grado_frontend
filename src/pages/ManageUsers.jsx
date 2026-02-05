@@ -11,9 +11,20 @@ const ManageUsers = () => {
     name: '',
     email: '',
     password: '',
-    phone: ''
+    phone: '',
   })
   const [creating, setCreating] = useState(false)
+
+  // Estado para edición
+  const [editingUser, setEditingUser] = useState(null)
+  const [editForm, setEditForm] = useState({
+    name: '',
+    email: '',
+    role: '',
+    phone: '',
+    isVerified: false,
+  })
+  const [savingEdit, setSavingEdit] = useState(false)
 
   useEffect(() => {
     if (!user || user.role !== 'admin') return
@@ -44,11 +55,70 @@ const ManageUsers = () => {
       setForm({ name: '', email: '', password: '', phone: '' })
       fetchUsers()
     } catch (err) {
-      alert(
-        err.response?.data?.message || 'Error al crear docente, intenta nuevamente'
-      )
+      alert(err.response?.data?.message || 'Error al crear docente')
     } finally {
       setCreating(false)
+    }
+  }
+
+  // ==== EDICIÓN ====
+  const openEdit = (u) => {
+    setEditingUser(u)
+    setEditForm({
+      name: u.name || '',
+      email: u.email || '',
+      role: u.role || 'student',
+      phone: u.phone || '',
+      isVerified: !!u.isVerified,
+    })
+  }
+
+  const closeEdit = () => {
+    setEditingUser(null)
+    setEditForm({
+      name: '',
+      email: '',
+      role: '',
+      phone: '',
+      isVerified: false,
+    })
+  }
+
+  const handleEditChange = (e) => {
+    const { name, value, type, checked } = e.target
+    setEditForm((prev) => ({
+      ...prev,
+      [name]: type === 'checkbox' ? checked : value,
+    }))
+  }
+
+  const handleSaveEdit = async (e) => {
+    e.preventDefault()
+    if (!editingUser) return
+    setSavingEdit(true)
+    try {
+      await api.put(`/users/${editingUser._id}`, editForm)
+      alert('Usuario actualizado correctamente')
+      closeEdit()
+      fetchUsers()
+    } catch (err) {
+      alert(err.response?.data?.message || 'Error al actualizar usuario')
+    } finally {
+      setSavingEdit(false)
+    }
+  }
+
+  // ==== ELIMINAR ====
+  const handleDeleteUser = async (id) => {
+    const confirm = window.confirm('¿Seguro que deseas eliminar este usuario?')
+    if (!confirm) return
+
+    try {
+      await api.delete(`/users/${id}`)
+      alert('Usuario eliminado correctamente')
+      fetchUsers()
+    } catch (err) {
+      alert(err.response?.data?.message || 'Error al eliminar usuario')
     }
   }
 
@@ -190,8 +260,8 @@ const ManageUsers = () => {
           transition={{ delay: 0.1 }}
           className="bg-white rounded-2xl shadow-md border border-slate-100 overflow-hidden"
         >
-          <div className="px-4 py-3 border-b border-slate-100 text-xs sm:text-sm text-slate-500">
-            Lista de usuarios
+          <div className="px-4 py-3 border-b border-slate-100 text-xs sm:text-sm text-slate-500 flex justify-between items-center">
+            <span>Lista de usuarios</span>
           </div>
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-slate-200 text-sm">
@@ -208,6 +278,9 @@ const ManageUsers = () => {
                   </th>
                   <th className="px-4 sm:px-6 py-3 text-left text-[11px] sm:text-xs font-semibold text-slate-500 uppercase tracking-wide">
                     Verificado
+                  </th>
+                  <th className="px-4 sm:px-6 py-3 text-right text-[11px] sm:text-xs font-semibold text-slate-500 uppercase tracking-wide">
+                    Acciones
                   </th>
                 </tr>
               </thead>
@@ -238,12 +311,26 @@ const ManageUsers = () => {
                         {u.isVerified ? 'Verificado' : 'Pendiente'}
                       </span>
                     </td>
+                    <td className="px-4 sm:px-6 py-3 text-right space-x-2">
+                      <button
+                        onClick={() => openEdit(u)}
+                        className="inline-flex items-center px-2.5 py-1 rounded-full text-[11px] font-semibold bg-sky-50 text-sky-700 hover:bg-sky-100"
+                      >
+                        Editar
+                      </button>
+                      <button
+                        onClick={() => handleDeleteUser(u._id)}
+                        className="inline-flex items-center px-2.5 py-1 rounded-full text-[11px] font-semibold bg-rose-50 text-rose-700 hover:bg-rose-100"
+                      >
+                        Eliminar
+                      </button>
+                    </td>
                   </tr>
                 ))}
                 {users.length === 0 && (
                   <tr>
                     <td
-                      colSpan={4}
+                      colSpan={5}
                       className="px-4 sm:px-6 py-8 text-center text-sm text-slate-500"
                     >
                       No hay usuarios registrados.
@@ -255,6 +342,108 @@ const ManageUsers = () => {
           </div>
         </motion.div>
       </div>
+
+      {/* MODAL EDICIÓN SIMPLE */}
+      {editingUser && (
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+          <div className="bg-white rounded-2xl shadow-xl max-w-lg w-full mx-4 p-6">
+            <h2 className="text-lg font-bold text-slate-900 mb-1">
+              Editar usuario
+            </h2>
+            <p className="text-sm text-slate-600 mb-4">
+              Modifica los datos básicos del usuario.
+            </p>
+            <form onSubmit={handleSaveEdit} className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-1.5">
+                  Nombre
+                </label>
+                <input
+                  name="name"
+                  value={editForm.name}
+                  onChange={handleEditChange}
+                  className="w-full border border-slate-300 px-3 py-2.5 rounded-lg text-sm focus:ring-2 focus:ring-[var(--color-primary)]/20 focus:border-[var(--color-primary)]"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-1.5">
+                  Email
+                </label>
+                <input
+                  type="email"
+                  name="email"
+                  value={editForm.email}
+                  onChange={handleEditChange}
+                  className="w-full border border-slate-300 px-3 py-2.5 rounded-lg text-sm focus:ring-2 focus:ring-[var(--color-primary)]/20 focus:border-[var(--color-primary)]"
+                  required
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1.5">
+                    Rol
+                  </label>
+                  <select
+                    name="role"
+                    value={editForm.role}
+                    onChange={handleEditChange}
+                    className="w-full border border-slate-300 px-3 py-2.5 rounded-lg text-sm focus:ring-2 focus:ring-[var(--color-primary)]/20 focus:border-[var(--color-primary)]"
+                  >
+                    <option value="student">Estudiante</option>
+                    <option value="teacher">Docente</option>
+                    <option value="admin">Admin</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1.5">
+                    Teléfono
+                  </label>
+                  <input
+                    name="phone"
+                    value={editForm.phone}
+                    onChange={handleEditChange}
+                    className="w-full border border-slate-300 px-3 py-2.5 rounded-lg text-sm focus:ring-2 focus:ring-[var(--color-primary)]/20 focus:border-[var(--color-primary)]"
+                  />
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <input
+                  id="isVerified"
+                  type="checkbox"
+                  name="isVerified"
+                  checked={editForm.isVerified}
+                  onChange={handleEditChange}
+                  className="h-4 w-4 rounded border-slate-300 text-[var(--color-primary)] focus:ring-[var(--color-primary)]/40"
+                />
+                <label
+                  htmlFor="isVerified"
+                  className="text-sm text-slate-700 select-none"
+                >
+                  Marcar como verificado
+                </label>
+              </div>
+
+              <div className="flex justify-end gap-3 pt-2">
+                <button
+                  type="button"
+                  onClick={closeEdit}
+                  className="px-4 py-2 rounded-full text-sm font-semibold border border-slate-300 text-slate-700 hover:bg-slate-50"
+                >
+                  Cancelar
+                </button>
+                <button
+                  type="submit"
+                  disabled={savingEdit}
+                  className="px-4 py-2 rounded-full text-sm font-semibold bg-[var(--color-primary)] text-white hover:bg-[#0d2f5a] disabled:opacity-60"
+                >
+                  {savingEdit ? 'Guardando...' : 'Guardar cambios'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
